@@ -9,7 +9,6 @@ public class Tweet implements Comparable<Tweet> {
 	private String tweet;
 
 	public Tweet(String usersName, String tweet) {
-		super();
 		this.usersName = usersName;
 		this.tweet = tweet;
 	}

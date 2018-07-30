@@ -45,19 +45,7 @@ public class TwitterAccountFactory {
 		return accounts;
 	}
 
-	public static TwitterAccount populateTwitterAccount(String name, String[] follows) {
-		TwitterAccount account = new TwitterAccount();
-		account.setAccountHolder(name);
-
-		Set<String> followsSet = new TreeSet<String>();
-		for (String followsName : follows) {
-			followsSet.add(followsName);
-		}
-		account.setFollows(followsSet);
-		return account;
-	}
-
-	public static List<Tweet> loadTweetsFromFile(String tweetFileName) throws FileNotFoundException {
+	public static List<Tweet> createTweetsFromFile(String tweetFileName) throws FileNotFoundException {
 		List<Tweet> tweets = new ArrayList<Tweet>();
 		InputStream inputStream = getFilePath(tweetFileName);
 		BufferedReader br = null;
@@ -83,7 +71,19 @@ public class TwitterAccountFactory {
 		}
 		return tweets;
 	}
-	
+
+	public static TwitterAccount populateTwitterAccount(String name, String[] follows) {
+		TwitterAccount account = new TwitterAccount();
+		account.setAccountHolder(name);
+
+		Set<String> followsSet = new TreeSet<String>();
+		for (String followsName : follows) {
+			followsSet.add(followsName);
+		}
+		account.setFollows(followsSet);
+		return account;
+	}
+
 	private static InputStream getFilePath(String fileName) throws FileNotFoundException {
 		InputStream path = TwitterAccountFactory.class.getClassLoader().getResourceAsStream(fileName);
 		if (path == null) {
