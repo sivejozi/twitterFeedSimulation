@@ -16,8 +16,8 @@ public class TwitterFeedSimulationApp {
 	public static void main(String[] args) throws FileNotFoundException {
 		String f = "user.txt";
 		String ff =  "tweet.txt";
-		List<TwitterAccount> rawData = TwitterAccountFactory.createTwitterAccountsFromFile(args[0]);		
-		List<Tweet> rawTweets = TwitterAccountFactory.createTweetsFromFile(args[1]);
+		List<TwitterAccount> rawData = TwitterAccountFactory.createTwitterAccountsFromFile(f/*args[0]*/);		
+		List<Tweet> rawTweets = TwitterAccountFactory.createTweetsFromFile(ff/*args[1]*/);
 		
 		TwitterAccountsController controller = new TwitterAccountsController(rawTweets);
 		for(TwitterAccount account : rawData){
