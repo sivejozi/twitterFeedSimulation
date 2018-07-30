@@ -1,33 +1,27 @@
 package simulation.twitter_feed.model.factory;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import simulation.twitter_feed.model.Tweet;
 import simulation.twitter_feed.model.TwitterAccount;
-import simulation.twitter_feed.model.TwitterUser;
 
 public class TwitterAccountFactory {
 
-	private static String USER_FILENAME = "user.txt";
-
-	private static String TWEET_FILENAME = "tweet.txt";
-
-	public static List<TwitterAccount> createTwitterAccountsFromFile() {
+	public static List<TwitterAccount> createTwitterAccountsFromFile(String userFileName) throws FileNotFoundException {
 		List<TwitterAccount> accounts = new ArrayList<TwitterAccount>();
-		URL path = TwitterAccountFactory.class.getResource(USER_FILENAME);
-		File file = null;
+		InputStream inputStream = getFilePath(userFileName);
 		BufferedReader br = null;
 		try {
 			String line;
-			file = new File(path.getFile());
-			br = new BufferedReader(new FileReader(file));
+			br = new BufferedReader(new InputStreamReader(inputStream));
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split("follows");
 				String name = parts[0].trim();
@@ -53,32 +47,28 @@ public class TwitterAccountFactory {
 
 	public static TwitterAccount populateTwitterAccount(String name, String[] follows) {
 		TwitterAccount account = new TwitterAccount();
-		List<String> feeds = getAccountHolderTweets(name);
-		TwitterUser accountHolder = new TwitterUser(name, feeds);
-		account.setAccountHolder(accountHolder);
+		account.setAccountHolder(name);
 
-		Set<TwitterUser> followsSet = new TreeSet<TwitterUser>();
+		Set<String> followsSet = new TreeSet<String>();
 		for (String followsName : follows) {
-			followsSet.add(new TwitterUser(followsName, getAccountHolderTweets(followsName)));
+			followsSet.add(followsName);
 		}
 		account.setFollows(followsSet);
 		return account;
 	}
 
-	public static List<String> getAccountHolderTweets(String name) {
-		List<String> tweets = new ArrayList<String>();
-		URL path = TwitterAccountFactory.class.getResource(TWEET_FILENAME);
-		File file = new File(path.getFile());
+	public static List<Tweet> loadTweetsFromFile(String tweetFileName) throws FileNotFoundException {
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		InputStream inputStream = getFilePath(tweetFileName);
 		BufferedReader br = null;
 		try {
 			String line;
-			br = new BufferedReader(new FileReader(file));
+			br = new BufferedReader(new InputStreamReader(inputStream));
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split("> ");
 				String user = parts[0].trim();
 				String tweet = parts[1].trim();
-				if (name.equals(user))
-					tweets.add(tweet);
+				tweets.add(new Tweet(user, tweet));
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Error getting account holders tweets : " + e);
@@ -92,5 +82,13 @@ public class TwitterAccountFactory {
 			}
 		}
 		return tweets;
+	}
+	
+	private static InputStream getFilePath(String fileName) throws FileNotFoundException {
+		InputStream path = TwitterAccountFactory.class.getClassLoader().getResourceAsStream(fileName);
+		if (path == null) {
+			throw new FileNotFoundException("Could not find file: " + fileName);
+		}
+		return path;
 	}
 }

@@ -11,12 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import simulation.twitter_feed.model.TwitterAccount;
-import simulation.twitter_feed.model.TwitterUser;
 
 public class TwitterAccountStorageTest {
 	
 	private TwitterAccount twitterAccount;
-	private TwitterUser accountHolder;
+	
 	private TwitterAccountStorage storage;
 
 	@Before
@@ -26,10 +25,8 @@ public class TwitterAccountStorageTest {
 	
 	@Test
 	public void testAddAndRemoveTwitterAccountsToAndFromStorageRespectively(){
-		accountHolder = new TwitterUser();
 		twitterAccount = new TwitterAccount();
-		accountHolder.setName("Cole");
-		twitterAccount.setAccountHolder(accountHolder);
+		twitterAccount.setAccountHolder("Cole");
 		
 		storage.add(twitterAccount);
 		assertEquals(1, storage.getStorage().size());
@@ -43,8 +40,8 @@ public class TwitterAccountStorageTest {
 		Set<TwitterAccount> tempList = new TreeSet<TwitterAccount>();
 		TwitterAccount first = new TwitterAccount();
 		TwitterAccount second = new TwitterAccount();
-		first.setAccountHolder(new TwitterUser() {{setName("User1");}});
-		second.setAccountHolder(new TwitterUser() {{setName("User2");}});
+		first.setAccountHolder("User1");
+		second.setAccountHolder("User2");
 		tempList.add(first);
 		tempList.add(second);
 		

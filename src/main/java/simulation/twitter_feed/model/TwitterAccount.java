@@ -8,32 +8,43 @@ public class TwitterAccount implements Serializable, Comparable<TwitterAccount> 
 
 	private static final long serialVersionUID = 1L;
 
-	private TwitterUser accountHolder;
+	private String accountHolder;
 	
-	private Set<TwitterUser> follows;
+	private Set<String> follows;
 	
-	public TwitterAccount(TwitterUser accountHolder, Set<TwitterUser> follows) {
+	private List<Tweet> tweets;
+	
+	public TwitterAccount(String accountHolder, Set<String> follows, List<Tweet> tweets) {
 		this.accountHolder = accountHolder;
 		this.follows = follows;
+		this.tweets = tweets;
 	}
 	
 	public TwitterAccount() {
 	}
 
-	public TwitterUser getAccountHolder() {
+	public String getAccountHolder() {
 		return accountHolder;
 	}
 	
-	public void setAccountHolder(TwitterUser accountHolder) {
+	public void setAccountHolder(String accountHolder) {
 		this.accountHolder = accountHolder;
 	}
 	
-	public Set<TwitterUser> getFollows() {
+	public Set<String> getFollows() {
 		return follows;
 	}
 	
-	public void setFollows(Set<TwitterUser> follows) {
+	public void setFollows(Set<String> follows) {
 		this.follows = follows;
+	}
+
+	public List<Tweet> getTweets() {
+		return tweets;
+	}
+
+	public void setTweets(List<Tweet> tweets) {
+		this.tweets = tweets;
 	}
 
 	@Override

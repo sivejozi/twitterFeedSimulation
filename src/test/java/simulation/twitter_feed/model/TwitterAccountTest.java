@@ -15,8 +15,8 @@ import org.junit.Test;
 public class TwitterAccountTest {
 	
 	private TwitterAccount twitterAccount;
-	private TwitterUser accountHolder;
-	private List<String> accountHolderTweets;
+	
+	private List<Tweet> accountHolderTweets;
 
 	@Before
 	public void setUp() throws Exception {
@@ -25,26 +25,21 @@ public class TwitterAccountTest {
 
 	@Test
 	public void testAccountHolderOfTwitterAccount() {
-		accountHolder = new TwitterUser();
-		accountHolder.setName("Cole");
-		accountHolderTweets = new ArrayList<String>();
-		accountHolderTweets.add("Coles first tweet");
-		accountHolder.setTweets(accountHolderTweets);
-		twitterAccount.setAccountHolder(accountHolder);
+		accountHolderTweets = new ArrayList<Tweet>();
+		accountHolderTweets.add(new Tweet("Cole", "Coles first tweet"));
+		twitterAccount.setTweets(accountHolderTweets);
+		twitterAccount.setAccountHolder("Cole");
 		
-		assertEquals("Cole", accountHolder.getName());
-		assertTrue(accountHolder.getTweets().get(0).equals("Coles first tweet"));
+		assertEquals("Cole", twitterAccount.getAccountHolder());
+		assertTrue(twitterAccount.getTweets().get(0).getTweet().equals("Coles first tweet"));
 		assertNotNull(twitterAccount.getAccountHolder());
 	}
 	
 	@Test
 	public void testThisTwitterAccountsFollows() {
-		Set<TwitterUser> follows = new TreeSet<TwitterUser>();
-		TwitterUser firstFollow = new TwitterUser();
-		firstFollow.setName("Eric");
-		follows.add(firstFollow);
+		Set<String> follows = new TreeSet<String>();
+		follows.add("Eric");
 		twitterAccount.setFollows(follows);
-		
 		assertTrue(twitterAccount.getFollows().size() == 1);
 	}
 
