@@ -2,6 +2,7 @@ package simulation.twitter_feed;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import simulation.twitter_feed.controller.TwitterAccountsController;
@@ -14,10 +15,8 @@ import simulation.twitter_feed.view.TwitterAccountsDisplay;
 public class TwitterFeedSimulationApp {
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		String f = "user.txt";
-		String ff =  "tweet.txt";
-		List<TwitterAccount> rawData = TwitterAccountFactory.createTwitterAccountsFromFile(f/*args[0]*/);		
-		List<Tweet> rawTweets = TwitterAccountFactory.createTweetsFromFile(ff/*args[1]*/);
+		List<TwitterAccount> rawData = TwitterAccountFactory.createTwitterAccountsFromFile(args[0]);		
+		List<Tweet> rawTweets = TwitterAccountFactory.createTweetsFromFile(args[1]);
 		
 		TwitterAccountsController controller = new TwitterAccountsController(rawTweets);
 		for(TwitterAccount account : rawData){

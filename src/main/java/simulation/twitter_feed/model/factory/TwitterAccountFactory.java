@@ -10,15 +10,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import simulation.twitter_feed.model.Tweet;
 import simulation.twitter_feed.model.TwitterAccount;
 
 public class TwitterAccountFactory {
 	
-	private static final Logger logger = Logger.getLogger( TwitterAccountFactory.class.getName() );
-
 	public static List<TwitterAccount> createTwitterAccountsFromFile(String userFileName) throws FileNotFoundException {
 		List<TwitterAccount> accounts = new ArrayList<TwitterAccount>();
 		InputStream inputStream = getFilePath(userFileName);
@@ -91,8 +87,8 @@ public class TwitterAccountFactory {
 	private static InputStream getFilePath(String fileName) throws FileNotFoundException {
 		InputStream path = TwitterAccountFactory.class.getClassLoader().getResourceAsStream(fileName);
 		if (path == null) {
-			logger.error("Could not find file: " + fileName);
-			//throw new FileNotFoundException("Could not find file: " + fileName);
+			String errorMsg = "Could not find file: " + fileName;
+			throw new FileNotFoundException(errorMsg);
 		}
 		return path;
 	}
