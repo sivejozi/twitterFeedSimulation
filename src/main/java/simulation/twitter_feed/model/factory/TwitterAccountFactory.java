@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import simulation.twitter_feed.model.Tweet;
 import simulation.twitter_feed.model.TwitterAccount;
 
-public class TwitterAccountFactory {
+public class TwitterAccountFactory extends Factory {
 	
 	public static List<TwitterAccount> createTwitterAccountsFromFile(String userFileName) throws FileNotFoundException {
 		List<TwitterAccount> accounts = new ArrayList<TwitterAccount>();
@@ -45,32 +44,6 @@ public class TwitterAccountFactory {
 		return accounts;
 	}
 
-	public static List<Tweet> createTweetsFromFile(String tweetFileName) throws FileNotFoundException {
-		List<Tweet> tweets = new ArrayList<Tweet>();
-		InputStream inputStream = getFilePath(tweetFileName);
-		BufferedReader br = null;
-		try {
-			String line;
-			br = new BufferedReader(new InputStreamReader(inputStream));
-			while ((line = br.readLine()) != null) {
-				String[] parts = line.split("> ");
-				String user = parts[0].trim();
-				String tweet = parts[1].trim();
-				tweets.add(new Tweet(user, tweet));
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Error getting account holders tweets : " + e);
-		} finally {
-			try {
-				if (br != null) {
-					br.close();
-				}
-			} catch (IOException ex) {
-				throw new RuntimeException("Problem occured. Cannot close reader : " + ex.getMessage());
-			}
-		}
-		return tweets;
-	}
 
 	public static TwitterAccount populateTwitterAccount(String name, String[] follows) {
 		TwitterAccount account = new TwitterAccount();
@@ -82,14 +55,5 @@ public class TwitterAccountFactory {
 		}
 		account.setFollows(followsSet);
 		return account;
-	}
-
-	private static InputStream getFilePath(String fileName) throws FileNotFoundException {
-		InputStream path = TwitterAccountFactory.class.getClassLoader().getResourceAsStream(fileName);
-		if (path == null) {
-			String errorMsg = "Could not find file: " + fileName;
-			throw new FileNotFoundException(errorMsg);
-		}
-		return path;
 	}
 }
